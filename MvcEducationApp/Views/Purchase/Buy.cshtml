@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Purchase form";
+}
+
+
+<h3>Purchase form</h3>
+
+<form method="post" class="form-horizontal" role="form">
+    <input type="hidden" value="@ViewBag.CourseId" name="CourseId" />
+    <p>To complete your purchase, fill in the following fields:</p>
+    <div class="form-group">
+        <label for="CardNumber" class="col-md-2 control-label">Сard number:</label>
+        <div class="col-md-4">
+            <input type="text" name="CardNumber" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="ExpData" class="col-md-2 control-label">Month/Year:</label>
+        <div class="col-md-4">
+            <input type="text" name="ExpData" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">CVV:</label>
+        <div class="col-md-4">
+            <input type="text" name="Cvv" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-primary btn-lg" value="Buy" />
+        </div>
+    </div>
+</form>

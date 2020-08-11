@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Courses List";
+}
+
+<div>@ViewBag.ErrorMessage</div>
+@if (ViewBag.ErrorMessage != null)
+{
+    <script> alert(@ViewBag.ErrorMessage);</script>
+}
+
+<form method="post" asp-controller="Home" asp-action="Index">
+    @if (User.IsInRole("admin"))
+    {
+        <div class="btn-group" role="group" aria-label="Admin buttons">
+            <button type="submit" name="submitbutton" value="Create" class="btn btn-secondary">Create</button>
+            <button type="submit" name="submitbutton" value="Edit" class="btn btn-secondary">Edit</button>
+            <button type="submit" name="submitbutton" value="Delete" class="btn btn-secondary">Delete</button>
+            <button type="submit" name="submitbutton" value="Link" class="btn btn-secondary">Link</button>
+        </div>
+    }
+    else
+    {
+        <div class="btn-group" role="group" aria-label="User Buttons">
+            <button type="submit" name="submitbutton" valuse="Buy" class="btn btn-secondary">Buy</button>
+        </div>
+    }
+    <table class="table-condensed">
+        <tr>
+            <td>Select</td>
+            <td>Title</td>
+            <td>Сategory</td>
+            <td>Price</td>
+            <td>LastUpdated</td>
+            <td></td>
+        </tr>
+        @foreach (var Course in Model)
+        {
+            <tr>
+                <td>
+                    <input name="AreChecked" type="checkbox" value="@Course.Id" />
+                </td>
+                <td>@Course.Title</td>
+                <td>@Course.Сategory</td>
+                <td>@Course.Price</td>
+                <td>@Course.LastUpdated</td>
+            </tr>
+        }
+    </table>
+</form>
