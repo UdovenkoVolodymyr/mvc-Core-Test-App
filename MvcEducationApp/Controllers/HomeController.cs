@@ -35,7 +35,6 @@ namespace MvcEducationApp.Controllers
         {
             switch (submitbutton)
             {
-                case "Create": return RedirectToAction("Create", "Course");
                 case "Edit": return EditCourseHandler(model);
                 case "Delete": return DeleteCourseHandler(model);
                 case "Link": return RedirectToAction("Index", "Home");

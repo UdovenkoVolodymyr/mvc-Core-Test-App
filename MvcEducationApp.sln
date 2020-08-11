@@ -7,13 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcEducationApp", "MvcEduca
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{D31F3A16-56B3-403E-90DE-475D4CDCAEE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcEducationApp.Domain.Core", "MvcEducationApp.Domain.Core\MvcEducationApp.Domain.Core.csproj", "{40B29EC0-9D9C-4826-9D65-CBED2F3CA7B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcEducationApp.Domain.Core", "MvcEducationApp.Domain.Core\MvcEducationApp.Domain.Core.csproj", "{40B29EC0-9D9C-4826-9D65-CBED2F3CA7B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcEducation.Domain.Interfaces", "MvcEducation.Domain.Interfaces\MvcEducation.Domain.Interfaces.csproj", "{F9794C1C-BAA3-47C5-BD47-8D4038C6554D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcEducation.Domain.Interfaces", "MvcEducation.Domain.Interfaces\MvcEducation.Domain.Interfaces.csproj", "{F9794C1C-BAA3-47C5-BD47-8D4038C6554D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{F52CD554-C09A-4D25-93A9-9520396BA4F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcEducationApp.Infrastructure.Data", "MvcEducationApp.Infrastructure.Data\MvcEducationApp.Infrastructure.Data.csproj", "{E9D5694A-CDEF-4F0A-8C10-FCAE51CEAF57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcEducationApp.Infrastructure.Data", "MvcEducationApp.Infrastructure.Data\MvcEducationApp.Infrastructure.Data.csproj", "{E9D5694A-CDEF-4F0A-8C10-FCAE51CEAF57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

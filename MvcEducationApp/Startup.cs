@@ -32,7 +32,7 @@ namespace MvcEducationApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<MvcEducationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LocalDBConnection")));
+            services.AddDbContextPool<MvcEducationDBContext>(options => options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("LocalDBConnection")));
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<MvcEducationDBContext>();
 
             AddAllRepos(services);

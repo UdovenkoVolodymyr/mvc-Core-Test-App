@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MvcEducation.Domain.Interfaces;
 using MvcEducationApp.Domain.Core.Models;
 using MvcEducationApp.ViewModels;
+using System.Security.Claims;
 
 namespace MvcEducationApp.Controllers
 {
@@ -17,12 +19,17 @@ namespace MvcEducationApp.Controllers
         private IGenericRepository<Course> _courseRepo;
         private IGenericRepository<Lesson> _lessonRepo;
         private ILogger<HomeController> _logger;
+        private IGenericRepository<User> _userRepo;
+        private UserManager<User> _userManager;
 
-        public CourseController(ILogger<HomeController> logger, IGenericRepository<Course> courseRepo, IGenericRepository<Lesson> lessonRepo)
+        public CourseController(ILogger<HomeController> logger, IGenericRepository<Course> courseRepo, IGenericRepository<Lesson> lessonRepo,
+            IGenericRepository<User> userRepo, UserManager<User> userManager)
         {
             _logger = logger;
             _courseRepo = courseRepo;
             _lessonRepo = lessonRepo;
+            _userRepo = userRepo;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -32,12 +39,17 @@ namespace MvcEducationApp.Controllers
         }
         
         [HttpPost]
-        public IActionResult Create(Course model)
+        public async Task<IActionResult> Create(Course model)
         {
-            model.LastUpdated = DateTime.UtcNow;
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            model.User = user;
             _courseRepo.Create(model);
             return RedirectToAction("Index", "Home");
         }
+        /*private async Task<User> GetUser(User user)
+        {
+            
+        }*/
 
         [HttpGet]
         public IActionResult Delete()

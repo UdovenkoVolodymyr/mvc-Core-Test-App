@@ -19,5 +19,18 @@ namespace MvcEducationApp.Infrastructure.Data
         {
             Database.EnsureCreated();
         }
+
+        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasOne(p => p.Lesson)
+                .WithMany(t => t.Course)
+                .OnDelete(DeleteBehavior.Cascade);
+        }*/
+
+        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+        }*/
     }
 }

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace MvcEducationApp.Domain.Core.Models
 {
-    public class User : IdentityUser<int>
+    public class User : IdentityUser
     {
         public int Year { get; set; }
-        public ICollection<Course> Course { get; set; }
-        public ICollection<Lesson> Lesson { get; set; }
+        public virtual ICollection<Course> Course { get; set; }
+        public virtual ICollection<Lesson> Lesson { get; set; }
     }
 }

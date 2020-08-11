@@ -18,39 +18,43 @@ namespace MvcEducationApp
             var defaultUserEmail = "email@user.com";
             var defaultUserPass = "userUser1!";
 
+            var admin = new User { Email = adminEmail, UserName = adminEmail, Year = 1776 };
+            var defaultUser = new User { Email = defaultUserEmail, UserName = defaultUserEmail, Year = 988 };
+
             var Roles = roleManager.Roles.Select(x => x.Name).ToList();
             if (!Roles.Any(s => "admin".Contains(s)))
             {
-                await roleManager.CreateAsync( new IdentityRole { Name = "admin" } );
-
-                var admin = new User { Email = adminEmail, UserName = adminEmail, Year = 1776 };
+                await roleManager.CreateAsync( new IdentityRole { Name = "admin" } );   
                 await userManager.CreateAsync(admin, adminPass);
                 await userManager.AddToRoleAsync(admin, "admin");
             }
 
-            var defaultUser = await userManager.FindByNameAsync("DefaultUser");
-            if (defaultUser == null)
+            var defaultUserCheck = await userManager.FindByNameAsync("DefaultUser");
+            if (defaultUserCheck == null)
             {
-                defaultUser = new User { Email = defaultUserEmail, UserName = defaultUserEmail, Year = 988 };
                 await userManager.CreateAsync(defaultUser, defaultUserPass);
             }
+            context.SaveChanges();
 
             if (!context.Courses.Any())
             {
+                var adminUser = await userManager.FindByNameAsync(adminEmail);
                 context.Courses.AddRange(
                     new Course
                     {
                         Title = "ASP.NET Core MVC",
                         Сategory = "programming",
                         Price = 600,
-                        LastUpdated = DateTime.UtcNow
+                        LastUpdated = DateTime.UtcNow,
+                        User = adminUser
                     },
                      new Course
                      {
                          Title = "Python",
                          Сategory = "programming",
                          Price = 600,
-                         LastUpdated = DateTime.UtcNow
+                         LastUpdated = DateTime.UtcNow,
+                         User = adminUser
                      }
                 );
                 context.SaveChanges();
