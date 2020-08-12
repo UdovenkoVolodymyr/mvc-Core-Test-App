@@ -34,7 +34,7 @@ namespace MvcEducationApp.Controllers
         public string Buy(Order order)
         {
             order.Id = 0;
-            _unitOfWork.Repository<Order>().Create(order);
+            _unitOfWork.GetRepository<Order>().Create(order);
             return "purchase successful !";
         }
     }

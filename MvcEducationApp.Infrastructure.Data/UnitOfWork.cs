@@ -40,7 +40,7 @@ namespace MvcEducationApp.Infrastructure.Data
             _context.SaveChanges();
         }
 
-        public IGenericRepository<TEntity> Repository<TEntity>() where TEntity: class
+        public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity: class
         {
             if (_repositories == null)
             {
@@ -48,12 +48,13 @@ namespace MvcEducationApp.Infrastructure.Data
             }
 
             var entityName = typeof(TEntity).Name;
-            if (_repositories.ContainsKey(entityName) == false)
-            {
+
+            if (_repositories.TryGetValue(entityName, out var repository) == false) {
                 EFGenericRepository<TEntity> repositoryInstance = new EFGenericRepository<TEntity>(_context);
                 _repositories.Add(entityName, repositoryInstance);
-            }
-            return (IGenericRepository<TEntity>)_repositories[entityName];
+                return (IGenericRepository<TEntity>)_repositories[entityName];
+            } 
+            return (IGenericRepository<TEntity>) repository;
         }
     }
 }

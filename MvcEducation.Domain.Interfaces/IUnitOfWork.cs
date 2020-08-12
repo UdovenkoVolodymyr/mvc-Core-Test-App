@@ -6,7 +6,7 @@ namespace MvcEducation.Domain.Interfaces
 {
     public interface IUnitOfWork
     {
-        IGenericRepository<TEntity> Repository<TEntity>() where TEntity : class;
+        IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
         void Save();
     }
 }

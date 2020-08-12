@@ -27,7 +27,7 @@ namespace MvcEducationApp.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var returnModel = _unitOfWork.Repository<Course>().Get();
+            var returnModel = _unitOfWork.GetRepository<Course>().Get();
             return View("Index", returnModel);
         }
 
@@ -53,7 +53,7 @@ namespace MvcEducationApp.Controllers
             else if (model.AreChecked.Count > 1)
             {
                 ViewBag.ErrorMessage = "You can not Edit more than 1 course at ones !";
-                var returnModel = _unitOfWork.Repository<Course>().Get();
+                var returnModel = _unitOfWork.GetRepository<Course>().Get();
                 return View("Index", returnModel);
             }
             else

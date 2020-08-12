@@ -38,7 +38,7 @@ namespace MvcEducationApp.Controllers
         {
             var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
             model.User = user;
-            _unitOfWork.Repository<Course>().Create(model);
+            _unitOfWork.GetRepository<Course>().Create(model);
             return RedirectToAction("Index", "Home");
         }
 
@@ -48,8 +48,8 @@ namespace MvcEducationApp.Controllers
             var Ids = (int[])TempData["deleteList"];
             foreach (var courseId in Ids)
             {
-                var courseToDelete = _unitOfWork.Repository<Course>().FindById(courseId);
-                _unitOfWork.Repository<Course>().Remove(courseToDelete);
+                var courseToDelete = _unitOfWork.GetRepository<Course>().FindById(courseId);
+                _unitOfWork.GetRepository<Course>().Remove(courseToDelete);
             }
             return RedirectToAction("Index", "Home");
         }
@@ -58,20 +58,20 @@ namespace MvcEducationApp.Controllers
         public IActionResult EditCourseBody(int id)
         {
             ViewBag.CourseId = id;
-            var course = _unitOfWork.Repository<Course>().FindById(id);
+            var course = _unitOfWork.GetRepository<Course>().FindById(id);
             return View("Edit", course);
         }
         
         [HttpPost]
         public IActionResult EditCourseBody(Course model)
         {
-            var modelToEdit = _unitOfWork.Repository<Course>().FindById(model.Id);
+            var modelToEdit = _unitOfWork.GetRepository<Course>().FindById(model.Id);
             modelToEdit.Title = model.Title;
             modelToEdit.Price = model.Price;
             modelToEdit.Сategory = model.Сategory;
             modelToEdit.Description = model.Description;
             modelToEdit.LastUpdated = DateTime.UtcNow;
-            _unitOfWork.Repository<Course>().Update(modelToEdit);
+            _unitOfWork.GetRepository<Course>().Update(modelToEdit);
             return RedirectToAction("Index", "Home");
         }
         
