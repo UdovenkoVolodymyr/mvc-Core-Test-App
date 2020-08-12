@@ -12,13 +12,13 @@ namespace MvcEducationApp.Controllers
 {
     public class PurchaseController : Controller
     {
-        private IGenericRepository<Order> _orderRepo;
+        private IUnitOfWork _unitOfWork;
         private ILogger<HomeController> _logger;
 
-        public PurchaseController(ILogger<HomeController> logger, IGenericRepository<Order> orderRepo)
+        public PurchaseController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
-            _orderRepo = orderRepo;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
@@ -34,7 +34,7 @@ namespace MvcEducationApp.Controllers
         public string Buy(Order order)
         {
             order.Id = 0;
-            _orderRepo.Create(order);
+            _unitOfWork.Repository<Order>().Create(order);
             return "purchase successful !";
         }
     }

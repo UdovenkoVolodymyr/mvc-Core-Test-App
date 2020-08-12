@@ -16,19 +16,14 @@ namespace MvcEducationApp.Controllers
     [Authorize(Roles = "admin")]
     public class CourseController : Controller
     {
-        private IGenericRepository<Course> _courseRepo;
-        private IGenericRepository<Lesson> _lessonRepo;
+        private IUnitOfWork _unitOfWork;
         private ILogger<HomeController> _logger;
-        private IGenericRepository<User> _userRepo;
         private UserManager<User> _userManager;
 
-        public CourseController(ILogger<HomeController> logger, IGenericRepository<Course> courseRepo, IGenericRepository<Lesson> lessonRepo,
-            IGenericRepository<User> userRepo, UserManager<User> userManager)
+        public CourseController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, UserManager<User> userManager)
         {
             _logger = logger;
-            _courseRepo = courseRepo;
-            _lessonRepo = lessonRepo;
-            _userRepo = userRepo;
+            _unitOfWork = unitOfWork;
             _userManager = userManager;
         }
 
@@ -41,15 +36,11 @@ namespace MvcEducationApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Course model)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
             model.User = user;
-            _courseRepo.Create(model);
+            _unitOfWork.Repository<Course>().Create(model);
             return RedirectToAction("Index", "Home");
         }
-        /*private async Task<User> GetUser(User user)
-        {
-            
-        }*/
 
         [HttpGet]
         public IActionResult Delete()
@@ -57,8 +48,8 @@ namespace MvcEducationApp.Controllers
             var Ids = (int[])TempData["deleteList"];
             foreach (var courseId in Ids)
             {
-                var courseToDelete = _courseRepo.FindById(courseId);
-                _courseRepo.Remove(courseToDelete);
+                var courseToDelete = _unitOfWork.Repository<Course>().FindById(courseId);
+                _unitOfWork.Repository<Course>().Remove(courseToDelete);
             }
             return RedirectToAction("Index", "Home");
         }
@@ -67,15 +58,20 @@ namespace MvcEducationApp.Controllers
         public IActionResult EditCourseBody(int id)
         {
             ViewBag.CourseId = id;
-            var course = _courseRepo.FindById(id);
+            var course = _unitOfWork.Repository<Course>().FindById(id);
             return View("Edit", course);
         }
         
         [HttpPost]
         public IActionResult EditCourseBody(Course model)
         {
-            model.LastUpdated = DateTime.UtcNow;
-            _courseRepo.Update(model);
+            var modelToEdit = _unitOfWork.Repository<Course>().FindById(model.Id);
+            modelToEdit.Title = model.Title;
+            modelToEdit.Price = model.Price;
+            modelToEdit.Сategory = model.Сategory;
+            modelToEdit.Description = model.Description;
+            modelToEdit.LastUpdated = DateTime.UtcNow;
+            _unitOfWork.Repository<Course>().Update(modelToEdit);
             return RedirectToAction("Index", "Home");
         }
         
@@ -84,7 +80,6 @@ namespace MvcEducationApp.Controllers
         {
             switch (submitbutton)
             {
-                case "Create": return RedirectToAction("Create", "Lesson", new { Id });
                 case "Edit": return EditLessonHandler(model, Id);
                 case "Delete": return DeleteLessonHandler(model, Id);
             }

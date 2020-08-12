@@ -35,7 +35,7 @@ namespace MvcEducationApp
             services.AddDbContextPool<MvcEducationDBContext>(options => options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("LocalDBConnection")));
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<MvcEducationDBContext>();
 
-            AddAllRepos(services);
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddControllersWithViews();
             services.AddMvc();
@@ -77,14 +77,5 @@ namespace MvcEducationApp
 
             app.UseRequestInfo();
         }
-
-        private void AddAllRepos(IServiceCollection services)
-        {
-            services.AddTransient<IGenericRepository<User>, EFGenericRepository<User>>();
-            services.AddTransient<IGenericRepository<Course>, EFGenericRepository<Course>>();
-            services.AddTransient<IGenericRepository<Order>, EFGenericRepository<Order>>();
-            services.AddTransient<IGenericRepository<Lesson>, EFGenericRepository<Lesson>>();
-        }
-
     }
 }

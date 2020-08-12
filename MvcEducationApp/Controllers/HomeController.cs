@@ -16,18 +16,19 @@ namespace MvcEducationApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private IGenericRepository<Course> _courseRepo;
+        private IUnitOfWork _unitOfWork;
 
-        public HomeController(ILogger<HomeController> logger, IGenericRepository<Course> courseRepo)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
-            _courseRepo = courseRepo;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            return View("Index", _courseRepo.Get());
+            var returnModel = _unitOfWork.Repository<Course>().Get();
+            return View("Index", returnModel);
         }
 
         [HttpPost]
@@ -52,7 +53,8 @@ namespace MvcEducationApp.Controllers
             else if (model.AreChecked.Count > 1)
             {
                 ViewBag.ErrorMessage = "You can not Edit more than 1 course at ones !";
-                return View("Index", _courseRepo.Get());
+                var returnModel = _unitOfWork.Repository<Course>().Get();
+                return View("Index", returnModel);
             }
             else
             {

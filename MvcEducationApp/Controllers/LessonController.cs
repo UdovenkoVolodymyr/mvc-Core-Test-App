@@ -14,19 +14,14 @@ namespace MvcEducationApp.Controllers
     [Route("[controller]/[action]")]
     public class LessonController : Controller
     {
-        private IGenericRepository<Lesson> _lessonRepo;
-        private IGenericRepository<Course> _courseRepo;
-        private IGenericRepository<User> _userRepo;
+        private IUnitOfWork _unitOfWork;
         private ILogger<HomeController> _logger;
         private UserManager<User> _userManager;
 
-        public LessonController(ILogger<HomeController> logger, IGenericRepository<Lesson> lessonRepo, IGenericRepository<Course> courseRepo,
-            IGenericRepository<User> userRepo, UserManager<User> userManager)
+        public LessonController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, UserManager<User> userManager)
         {
             _logger = logger;
-            _lessonRepo = lessonRepo;
-            _courseRepo = courseRepo;
-            _userRepo = userRepo;
+            _unitOfWork = unitOfWork;
             _userManager = userManager;
         }
 
@@ -40,33 +35,32 @@ namespace MvcEducationApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Lesson model)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            var course = _courseRepo.FindById(model.CourseId);
+            var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
+            var course = _unitOfWork.Repository<Course>().FindById(model.CourseId);
             model.LastUpdated = DateTime.UtcNow;
             model.Course = course;
             model.User = user;
-            _lessonRepo.Create(model);
-            return RedirectToAction("Index", "Home");
+            _unitOfWork.Repository<Lesson>().Create(model);
+            return RedirectToAction("EditCourseBody", "Course", new { Id = model.CourseId });
         }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            ViewBag.CourseId = id;
-            TempData["CourseId"] = id;
-            var lesson = _lessonRepo.FindById(id);
+            var lesson = _unitOfWork.Repository<Lesson>().FindById(id);
             return View("Edit", lesson);
         }
 
         [HttpPost]
         public IActionResult Edit(Lesson model)
         {
-            var courseId = (int)TempData["CourseId"];
-            model.LastUpdated = DateTime.UtcNow;
-            model.CourseId = courseId;
-            model.Course = _courseRepo.FindById((int)TempData["CourseId"]);
-            _lessonRepo.Update(model);
-            return RedirectToAction("EditCourseBody", "Course", new { Id = TempData["CourseId"] });
+            var modelToEdit = _unitOfWork.Repository<Lesson>().FindById(model.Id);
+            modelToEdit.LastUpdated = DateTime.UtcNow;
+            modelToEdit.Title = model.Title;
+            modelToEdit.Description = model.Description;
+            modelToEdit.Text = model.Text;
+            _unitOfWork.Repository<Lesson>().Update(modelToEdit);
+            return RedirectToAction("EditCourseBody", "Course", new { Id = modelToEdit.CourseId });
         }
 
         [HttpGet]
@@ -75,8 +69,8 @@ namespace MvcEducationApp.Controllers
             var Ids = (int[])TempData["deleteList"];
             foreach (var lessonId in Ids)
             {
-                var lessonToDelete = _lessonRepo.FindById(lessonId);
-                _lessonRepo.Remove(lessonToDelete);
+                var lessonToDelete = _unitOfWork.Repository<Lesson>().FindById(lessonId);
+                _unitOfWork.Repository<Lesson>().Remove(lessonToDelete);
             }
             return RedirectToAction("Index", "Home");
         }
