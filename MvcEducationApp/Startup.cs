@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using McvEducationApp.BusinessLogic.Interfaces;
+using McvEducationApp.BusinessLogic.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +19,6 @@ using MvcEducation.Domain.Interfaces;
 using MvcEducationApp.Domain.Core.Models;
 using MvcEducationApp.Infrastructure.Data;
 using MvcEducationApp.Models;
-using MvcEducationApp.Services;
 
 namespace MvcEducationApp
 {
@@ -32,16 +34,17 @@ namespace MvcEducationApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<MvcEducationDBContext>(options => options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("LocalDBConnection")));
+            services.AddDbContextPool<MvcEducationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LocalDBConnection"))); //UseLazyLoadingProxies()
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<MvcEducationDBContext>();
 
+            AddAutoMapper(services);
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ICourseService, CourseService>();
+            services.AddScoped<ILessonService, LessonService>();
+            services.AddScoped<IBuyService, BuyService>();
 
             services.AddControllersWithViews();
             services.AddMvc();
-
-            services.AddTransient<IMessageSender, EmailMessageSender>();
-            services.AddSingleton<DebugLogger>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,6 +79,17 @@ namespace MvcEducationApp
             });
 
             app.UseRequestInfo();
+        }
+
+        public void AddAutoMapper(IServiceCollection services)
+        {
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
     }
 }

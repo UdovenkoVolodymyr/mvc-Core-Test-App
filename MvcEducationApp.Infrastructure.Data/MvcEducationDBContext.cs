@@ -13,24 +13,55 @@ namespace MvcEducationApp.Infrastructure.Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Lesson> Lesson { get; set; }
+        public DbSet<Course> LinkedCourseEntity { get; set; }
+        public DbSet<VideoFile> VideoFiles { get; set; }
+        public DbSet<UserCourse> UserCourses { get; set; }
 
-        public MvcEducationDBContext(DbContextOptions<MvcEducationDBContext> options)
-            : base(options)
+        public MvcEducationDBContext(DbContextOptions<MvcEducationDBContext> options) : base(options)
         {
             Database.EnsureCreated();
         }
 
-        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                .HasOne(p => p.Lesson)
-                .WithMany(t => t.Course)
-                .OnDelete(DeleteBehavior.Cascade);
-        }*/
+            base.OnModelCreating(modelBuilder);
 
-        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseLazyLoadingProxies();
-        }*/
+            modelBuilder.Entity<UserCourse>()
+                .HasKey(k => new { k.CourseId, k.UserId });
+
+            modelBuilder.Entity<UserCourse>()
+                .HasOne(u => u.User)
+                .WithMany(uc => uc.UserCourses)
+                .HasForeignKey(k => k.UserId);
+            modelBuilder.Entity<UserCourse>()
+                .HasOne(u => u.Course)
+                .WithMany(uc => uc.UserCourses)
+                .HasForeignKey(k => k.CourseId);
+
+            modelBuilder.Entity<Lesson>()
+                .HasOne(c => c.VideoFile)
+                .WithOne(b => b.Lesson)
+                .HasForeignKey<VideoFile>(k => k.LessonId);
+
+
+            modelBuilder.Entity<Course>()
+                .HasMany(p => p.Lessons)
+                .WithOne(p => p.Course).IsRequired()
+                .HasForeignKey(fk => fk.CourseId);
+
+            modelBuilder.Entity<LinkedCourseEntity>()
+                 .HasKey(x => new { x.LinkedCourseId, x.CourseId });
+
+            modelBuilder.Entity<LinkedCourseEntity>()
+                 .HasOne(pt => pt.LinkedCourse)
+                 .WithMany() // p => p.LinkedCoursesOf
+                 .HasForeignKey(pt => pt.LinkedCourseId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<LinkedCourseEntity>()
+                .HasOne(pt => pt.Course)
+                .WithMany(t => t.LinkedCourses)
+                .HasForeignKey(pt => pt.CourseId);
+        }
     }
 }

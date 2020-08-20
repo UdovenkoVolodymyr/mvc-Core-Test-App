@@ -10,5 +10,7 @@ namespace MvcEducationApp.ViewModels
     {
         [BindProperty]
         public List<int> AreChecked { get; set; }
+        [BindProperty]
+        public string submitbutton { get; set; }
     }
 }

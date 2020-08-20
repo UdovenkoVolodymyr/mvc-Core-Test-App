@@ -1,12 +1,12 @@
-﻿using System;
+﻿using MvcEducationApp.Domain.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace MvcEducationApp.Domain.Core.Models
+namespace McvEducationApp.BusinessLogic.DTO
 {
-    public class Lesson
+    public class LessonDTO
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -21,6 +21,7 @@ namespace MvcEducationApp.Domain.Core.Models
         public virtual int CourseId { get; set; }
         public virtual Course Course { get; set; }
         public virtual VideoFile VideoFile { get; set; }
-        //public virtual int VideoFileId { get; set; }
+        public int UnlinkCourseId { get; set; }
+        public int LinkedCourseId { get; set; }
     }
 }

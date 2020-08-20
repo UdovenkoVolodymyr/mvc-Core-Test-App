@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Course Details";
+}
+
+<h3>Course Detail</h3>
+
+<input type="hidden" value="@ViewBag.CourseId" name="Id" />
+<div class="form-group">
+    <label for="Title">Course Name</label>
+    <input type="text" class="form-control" id="Title" name="Title" value="@Model.Title">
+</div>
+<div class="form-group">
+    <label for="Сategory">Сategory</label>
+    <input type="text" class="form-control" id="Сategory" name="Сategory" value="@Model.Сategory">
+</div>
+<div class="form-group">
+    <label for="Price">Price</label>
+    <input type="text" class="form-control" id="Price" name="Price" value="@Model.Price">
+</div>
+<div class="form-group">
+    <label for="Description">Description</label>
+    <textarea class="form-control" id="Description" name="Description" rows="3">@Model.Description</textarea>
+</div>
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" class="btn btn-default" value="Edit" />
+    </div>
+</div>
+
+
+
+<h3>Linked Courses</h3>
+<table class="table-condensed">
+    <tr>
+        <td>Course</td>
+    </tr>
+    @if (Model.LinkedCourses != null)
+    {
+        foreach (var linkedCourse in Model.LinkedCourses)
+        {
+            <tr>
+                <td>@linkedCourse.LinkedCourse.Title</td>
+            </tr>
+        }
+    }
+</table>
+
+<h3>Lessons</h3>
+
+<table class="table-condensed">
+    @if (Model.Lessons != null)
+    {
+        foreach (var Lesson in Model.Lessons)
+        {
+            <tr>
+                <td>@Lesson.Title</td>
+                <td>@Lesson.CreatedBy</td>
+                <td>@Lesson.LastUpdated</td>
+            </tr>
+        }
+    }
+</table>

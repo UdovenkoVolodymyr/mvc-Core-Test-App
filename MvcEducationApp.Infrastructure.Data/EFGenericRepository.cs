@@ -20,21 +20,25 @@ namespace MvcEducationApp.Infrastructure.Data
 
         public IEnumerable<TEntity> Get()
         {
-            return _dbSet.ToList();
+            return _dbSet.AsNoTracking().ToList();
         }
 
         public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate)
         {
-            return _dbSet.Where(predicate).ToList();
+            return _dbSet.AsNoTracking().Where(predicate).ToList();
         }
         public TEntity FindById(int id)
         {
-            return _dbSet.Find(id);
+            var entity = _dbSet.Find(id);
+            _context.Entry(entity).State = EntityState.Detached;
+            return entity;
         }
 
         public TEntity FindById(string id)
         {
-            return _dbSet.Find(id);
+            var entity = _dbSet.Find(id);
+            _context.Entry(entity).State = EntityState.Detached;
+            return entity;
         }
 
         public void Create(TEntity item)
@@ -55,13 +59,19 @@ namespace MvcEducationApp.Infrastructure.Data
             _context.SaveChanges();
         }
 
+        public void RemoveById(int id)
+        {
+            var itemToRemove = _dbSet.Find(id);
+            _dbSet.Remove(itemToRemove);
+            _context.SaveChanges();
+        }
+
         public IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties)
         {
             return Include(includeProperties).ToList();
         }
 
-        public IEnumerable<TEntity> GetWithInclude(Func<TEntity, bool> predicate,
-            params Expression<Func<TEntity, object>>[] includeProperties)
+        public IEnumerable<TEntity> GetWithInclude(Func<TEntity, bool> predicate, params Expression<Func<TEntity, object>>[] includeProperties)
         {
             var query = Include(includeProperties);
             return query.Where(predicate).ToList();

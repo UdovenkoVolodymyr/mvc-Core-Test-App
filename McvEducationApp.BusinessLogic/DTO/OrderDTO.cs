@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace MvcEducationApp.Domain.Core.Models
+namespace McvEducationApp.BusinessLogic.DTO
 {
-    public class Order
+    public class OrderDTO
     {
-        public int Id { get; set; }
         public int CardNumber { get; set; }
         public string ExpData { get; set; }
         public int Cvv { get; set; }
         public int CourseId { get; set; }
+        public string UserId { get; set; }
     }
 }

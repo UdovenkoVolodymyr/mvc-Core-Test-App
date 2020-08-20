@@ -19,9 +19,12 @@ namespace MvcEducationApp.Domain.Core.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime LastUpdated { get; set; }
 
-        public virtual string UserId { get; set; }
-        public virtual User User { get; set; }
-        public virtual ICollection<Lesson> Lesson { get; set; }
+        public virtual ICollection<UserCourse> UserCourses { get; set; }
+        public virtual string CreatedById { get; set; }
+        public virtual User CreatedBy { get; set; }
+        public virtual ICollection<Lesson> Lessons { get; set; }
+        public virtual ICollection<LinkedCourseEntity> LinkedCourses { get; set; }
+        //public virtual ICollection<LinkedCourseEntity> LinkedCoursesOf { get; set; }
 
     }
 }

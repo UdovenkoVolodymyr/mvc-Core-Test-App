@@ -46,7 +46,7 @@ namespace MvcEducationApp
                         Сategory = "programming",
                         Price = 600,
                         LastUpdated = DateTime.UtcNow,
-                        User = adminUser
+                        CreatedBy = adminUser
                     },
                      new Course
                      {
@@ -54,7 +54,7 @@ namespace MvcEducationApp
                          Сategory = "programming",
                          Price = 600,
                          LastUpdated = DateTime.UtcNow,
-                         User = adminUser
+                         CreatedBy = adminUser
                      }
                 );
                 context.SaveChanges();

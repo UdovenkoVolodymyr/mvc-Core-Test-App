@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using McvEducationApp.BusinessLogic.DTO;
+using McvEducationApp.BusinessLogic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,17 +20,23 @@ namespace MvcEducationApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private IUnitOfWork _unitOfWork;
+        private ICourseService _courseService;
 
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, ICourseService courseService)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
+            _courseService = courseService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var returnModel = _unitOfWork.GetRepository<Course>().Get();
+            var courseDTO = _courseService.GetAllCourse();
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<CourseDTO, Course>());
+            var mapper = new Mapper(config);
+            var returnModel = mapper.Map<IEnumerable<CourseDTO>, IEnumerable<Course>>(courseDTO);
+
             return View("Index", returnModel);
         }
 
@@ -70,7 +79,7 @@ namespace MvcEducationApp.Controllers
             }
             else
             {
-                return RedirectToAction("Buy", "Purchase", new { Id = model.AreChecked });
+                return RedirectToAction("Buy", "Purchase", new { Id = model.AreChecked[0] });
             }
         }
         private IActionResult DeleteCourseHandler(CoureseViewModel model)

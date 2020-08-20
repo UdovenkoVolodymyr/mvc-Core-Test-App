@@ -11,17 +11,16 @@
 <form method="post" asp-controller="Home" asp-action="Index">
     @if (User.IsInRole("admin"))
     {
-    <div class="btn-group" role="group" aria-label="Admin buttons">
-        <button type="button" onclick="location.href='@Url.Action("Create", "Course")'" name="submitbutton" value="Create" class="btn btn-secondary">Create</button>
-        <button type="submit" name="submitbutton" value="Edit" class="btn btn-secondary">Edit</button>
-        <button type="submit" name="submitbutton" value="Delete" class="btn btn-secondary">Delete</button>
-        <button type="submit" name="submitbutton" value="Link" class="btn btn-secondary">Link</button>
-    </div>
+        <div class="btn-group" role="group" aria-label="Admin buttons">
+            <a type="button" onclick="location.href='@Url.Action("Create", "Course")'" name="submitbutton" value="Create" class="btn btn-secondary">Create</a>
+            <button type="submit" name="submitbutton" value="Edit" class="btn btn-secondary">Edit</button>
+            <button type="submit" name="submitbutton" value="Delete" class="btn btn-secondary">Delete</button>
+        </div>
     }
     else
     {
-        <div class="btn-group" role="group" aria-label="User Buttons">
-            <button type="submit" name="submitbutton" valuse="Buy" class="btn btn-secondary">Buy</button>
+        <div class="btn-group" role="group" aria-label="User buttons">
+            <button type="submit" name="submitbutton" value="Buy" class="btn btn-secondary">Buy</button>
         </div>
     }
     <table class="table-condensed">
@@ -43,7 +42,7 @@
         <td>@Course.Title</td>
         <td>@Course.Сategory</td>
         <td>@Course.Price</td>
-        <td>@Course.User</td>
+        <td>@Course.CreatedBy.Email</td>
         <td>@Course.LastUpdated</td>
     </tr>
         }

@@ -1,6 +1,7 @@
 ﻿using MvcEducation.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
@@ -56,5 +57,23 @@ namespace MvcEducationApp.Infrastructure.Data
             } 
             return (IGenericRepository<TEntity>) repository;
         }
+
+        public ICourseRepository GetCourseRepository()
+        {
+            return new CourseRepository(_context);
+        }
+
+        public IUserCourseRepository GetUserCourseRepository()
+        {
+            return new UserCourseRepository(_context);
+        }
+
+        /*public dynamic GetCustomRepository<TEntity>() where TEntity : class
+        {
+            var entityName = typeof(TEntity).Name;
+            var objType = Type.GetType($"MvcEducationApp.Infrastructure.Data.{entityName}Repository");
+            var customRepo = Activator.CreateInstance(objType, _context);
+            return customRepo;
+        }*/
     }
 }
