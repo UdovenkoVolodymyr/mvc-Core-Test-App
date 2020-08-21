@@ -16,11 +16,17 @@ namespace MvcEducationApp.Domain.Core.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime LastUpdated { get; set; }
+        public InfoType InfoType { get; set; }
         public virtual string CreatedById { get; set; }
         public virtual User CreatedBy { get; set; }
         public virtual int CourseId { get; set; }
         public virtual Course Course { get; set; }
         public virtual VideoFile VideoFile { get; set; }
-        //public virtual int VideoFileId { get; set; }
+    }
+
+    public enum InfoType
+    {
+        Text,
+        Video
     }
 }

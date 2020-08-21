@@ -7,36 +7,28 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
+using MvcEducationApp.Domain.Core.Models;
 
 namespace McvEducationApp.BusinessLogic.Services
 {
-    public class VideoService : IVideoFileService
+    public class VideoService : IVideoService
     {
-        /*private IUnitOfWork _unitOfWork;
-        private IWebHostEnvironment _appEnvironment;
+        private IFileStorage _fileStorage;
+        private IUnitOfWork _unitOfWork;
 
-        public VideoService(IUnitOfWork unitOfWork, IWebHostEnvironment appEnvironment)
+        public VideoService(IFileStorage fileStorage, IUnitOfWork unitOfWork)
         {
+            _fileStorage = fileStorage;
             _unitOfWork = unitOfWork;
-            _appEnvironment = appEnvironment;
         }
+        public void UploadFileAsync(Stream fileStream, string rootPath, int lessonId)
+        {
+            var lessonName = $"lesson{lessonId}video";
+            var filePath = _fileStorage.StoreFile(fileStream, rootPath, lessonName);
 
-        public async System.Threading.Tasks.Task UploadFileAsync(IFormFile uploadedFile)
-        {
-            if (uploadedFile != null)
-            {
-                string path = "/files/" + uploadedFile.FileName;
-                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
-                {
-                    await uploadedFile.CopyToAsync(fileStream);
-                }
-                var file = new VideoFile { Name = uploadedFile.FileName, Path = path };
-                _context.Files.Add(file);
-                _context.SaveChanges();
-            }*/
-        public Task UploadFileAsync(IFormFile uploadedFile)
-        {
-            throw new NotImplementedException();
+            var file = new VideoFile { Name = lessonName, Path = filePath, LessonId = lessonId };
+            _unitOfWork.GetRepository<VideoFile>().Create(file);
         }
     }
 }

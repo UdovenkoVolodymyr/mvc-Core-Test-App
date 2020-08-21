@@ -88,9 +88,11 @@ namespace MvcEducationApp.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public IActionResult EditCourseBody(Course model)
+        public async Task<IActionResult> EditCourseBody(Course model)
         {
-            _courseService.EditCourse(_mapper.Map<Course, CourseDTO>(model));
+            var courseDTO = _mapper.Map<Course, CourseDTO>(model);
+
+            _courseService.EditCourse(courseDTO);
             return RedirectToAction("Index", "Home");
         }
 

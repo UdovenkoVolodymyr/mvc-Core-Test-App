@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Lesson Details";
+}
+
+<h2>Lesson Details</h2>
+<input type="hidden" value="@Model.Id" name="Id" />
+<div class="form-group">
+    <label for="Title">Course Name</label>
+    <input type="text" class="form-control" id="Title" name="Title" value="@Model.Title">
+</div>
+<div class="form-group">
+    <label for="Description">Description</label>
+    <textarea class="form-control" id="Description" name="Description" rows="3">"@Model.Description"</textarea>
+</div>
+@if (Model.InfoType.ToString() == "Text")
+{
+    <div class="form-group">
+        <label for="Text">Lesson Text</label>
+        <textarea class="form-control" id="Text" name="Text" rows="3">"@Model.Text"</textarea>
+    </div>
+}
+else
+{
+    <div class="form-group">
+        <label for="Video">Lesson Video</label>
+        <video controls autoplay>
+            <source src=@Model.VideoFile.Path type="video/mp4" id="Video">
+        </video>
+    </div>
+}

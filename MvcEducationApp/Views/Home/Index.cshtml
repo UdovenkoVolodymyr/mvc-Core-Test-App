@@ -12,7 +12,7 @@
     @if (User.IsInRole("admin"))
     {
         <div class="btn-group" role="group" aria-label="Admin buttons">
-            <a type="button" onclick="location.href='@Url.Action("Create", "Course")'" name="submitbutton" value="Create" class="btn btn-secondary">Create</a>
+            <a type="button" onclick="location.href='@Url.Action("Create", "Course")'" name="submitbutton" value="Create" class="btn btn-secondary" style="color: white;">Create</a>
             <button type="submit" name="submitbutton" value="Edit" class="btn btn-secondary">Edit</button>
             <button type="submit" name="submitbutton" value="Delete" class="btn btn-secondary">Delete</button>
         </div>
@@ -23,7 +23,8 @@
             <button type="submit" name="submitbutton" value="Buy" class="btn btn-secondary">Buy</button>
         </div>
     }
-    <table class="table-condensed">
+<table class="table table-striped">
+    <thead class="thead-dark">
         <tr>
             <td>Select</td>
             <td>Title</td>
@@ -33,18 +34,21 @@
             <td>LastUpdated</td>
             <td></td>
         </tr>
+    </thead>
+    <tbody>
         @foreach (var Course in Model)
         {
-    <tr>
-        <td>
-            <input name="AreChecked" type="checkbox" value="@Course.Id" />
-        </td>
-        <td>@Course.Title</td>
-        <td>@Course.Сategory</td>
-        <td>@Course.Price</td>
-        <td>@Course.CreatedBy.Email</td>
-        <td>@Course.LastUpdated</td>
-    </tr>
+            <tr>
+                <td>
+                    <input name="AreChecked" type="checkbox" value="@Course.Id" />
+                </td>
+                <td>@Course.Title</td>
+                <td>@Course.Сategory</td>
+                <td>@Course.Price</td>
+                <td>@Course.CreatedBy.Email</td>
+                <td>@Course.LastUpdated</td>
+            </tr>
         }
-    </table>
+    </tbody>
+</table>
 </form>

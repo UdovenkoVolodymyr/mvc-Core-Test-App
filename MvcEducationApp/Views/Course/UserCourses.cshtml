@@ -3,23 +3,27 @@
 }
 
 
-<table class="table-condensed">
-    <tr>
-        <td>Title</td>
-        <td>Сategory</td>
-        <td>Price</td>
-        <td>Created By</td>
-        <td>LastUpdated</td>
-        <td></td>
-    </tr>
-    @foreach (var Course in Model)
-    {
-    <tr onclick="location.href='@Url.Action("ViewCourseDetails", "Course", new { Id = Course.Id })'">
-        <td>@Course.Title</td>
-        <td>@Course.Сategory</td>
-        <td>@Course.Price</td>
-        <td>@Course.CreatedBy.Email</td>
-        <td>@Course.LastUpdated</td>
-    </tr>
-    }
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <td>Title</td>
+            <td>Сategory</td>
+            <td>Price</td>
+            <td>Created By</td>
+            <td>LastUpdated</td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Course in Model)
+        {
+            <tr onclick="location.href='@Url.Action("ViewCourseDetails", "Course", new { Id = Course.Id })'">
+                <td>@Course.Title</td>
+                <td>@Course.Сategory</td>
+                <td>@Course.Price</td>
+                <td>@Course.CreatedBy.Email</td>
+                <td>@Course.LastUpdated</td>
+            </tr>
+        }
+    </tbody>
 </table>

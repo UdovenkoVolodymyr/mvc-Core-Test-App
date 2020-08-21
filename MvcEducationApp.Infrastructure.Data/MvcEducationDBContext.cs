@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcEducationApp.Domain.Core.Models;
 
 namespace MvcEducationApp.Infrastructure.Data
@@ -24,6 +25,8 @@ namespace MvcEducationApp.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            var infoTypeCovertor = new EnumToStringConverter<InfoType>();
+
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<UserCourse>()
@@ -62,6 +65,10 @@ namespace MvcEducationApp.Infrastructure.Data
                 .HasOne(pt => pt.Course)
                 .WithMany(t => t.LinkedCourses)
                 .HasForeignKey(pt => pt.CourseId);
+
+            modelBuilder.Entity<Lesson>()
+                .Property(e => e.InfoType)
+                .HasConversion(infoTypeCovertor);
         }
     }
 }

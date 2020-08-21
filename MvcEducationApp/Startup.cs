@@ -42,6 +42,8 @@ namespace MvcEducationApp
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<ILessonService, LessonService>();
             services.AddScoped<IBuyService, BuyService>();
+            services.AddScoped<IFileStorage, FileStorage>();
+            services.AddScoped<IVideoService, VideoService>();
 
             services.AddControllersWithViews();
             services.AddMvc();

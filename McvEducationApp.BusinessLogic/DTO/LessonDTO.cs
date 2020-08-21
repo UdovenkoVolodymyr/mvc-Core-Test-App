@@ -16,6 +16,7 @@ namespace McvEducationApp.BusinessLogic.DTO
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime LastUpdated { get; set; }
+        public InfoType InfoType { get; set; }
         public virtual string CreatedById { get; set; }
         public virtual User CreatedBy { get; set; }
         public virtual int CourseId { get; set; }

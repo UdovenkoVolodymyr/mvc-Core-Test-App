@@ -6,23 +6,50 @@
 <form method="post" asp-controller="Lesson" asp-action="Edit" enctype="multipart/form-data">
     <input type="hidden" value="@Model.Id" name="Id" />
     <div class="form-group">
-        <label for="Title">Course Name</label>
+        <label for="Title">Lesson Name</label>
         <input type="text" class="form-control" id="Title" name="Title" value="@Model.Title">
     </div>
     <div class="form-group">
-        <label for="ategory">Text</label>
-        <input type="text" class="form-control" id="Text" name="Text" value="@Model.Text">
-    </div>
-    <div class="form-group">
         <label for="Description">Description</label>
-        <textarea class="form-control" id="Description" name="Description" rows="3">"@Model.Description"</textarea>
+        <textarea class="form-control" id="Description" name="Description" rows="3">@Model.Description</textarea>
     </div>
     <div class="form-group">
-        <input type="file" name="UploadedFile" />
+        <label for="exampleFormControlSelect1">Example select</label>
+        <select class="form-control" id="InfoType" name="InfoType">
+            <option selected value=@Model.SelectedFileType>@Model.SelectedFileType</option>
+            @foreach (var noSelectedFileType in Model.NoSelectedFileType)
+            {
+                <option>@noSelectedFileType</option>
+            }
+        </select>
+    </div>
+    <div class="form-group" id="TextArea" style="display: none;">
+        <label for="Text">Lesson Text</label>
+        <textarea class="form-control" id="Text" name="Text" rows="3">@Model.Text</textarea>
+    </div>
+    <div class="form-group" style="display: none;" id="UploadFileArea">
+        <input type="file" name="UploadedFile" id="UploadedFile" class="form-control-file" />
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Edit" />
+            <input type="submit" class="btn btn-secondary" value="Edit" />
         </div>
     </div>
 </form>
+
+<script type="text/javascript">
+    var infoTypeElement = document.getElementById("InfoType");
+
+    infoTypeElement.addEventListener('change', setDisplayStatus);
+    var textStyle = infoTypeElement.value == "Text" ? 'block' : 'none';
+    var videoStyle = infoTypeElement.value == "Video" ? 'block' : 'none';
+    document.getElementById("UploadFileArea").style.display = videoStyle;
+    document.getElementById("TextArea").style.display = textStyle;
+
+    function setDisplayStatus() {
+        var textStyle = this.value == "Text" ? 'block' : 'none';
+        var videoStyle = this.value == "Video" ? 'block' : 'none';
+        document.getElementById("UploadFileArea").style.display = videoStyle;
+        document.getElementById("TextArea").style.display = textStyle;
+    }
+</script>

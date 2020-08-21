@@ -28,9 +28,10 @@ namespace MvcEducationApp.Controllers
         private ICourseService _courseService;
         private IMapper _mapper;
         private IUnitOfWork _unitOfWork;
+        private IVideoService _videoService;
 
         public LessonController(ILogger<HomeController> logger, UserManager<User> userManager, ILessonService lessonService,
-            ICourseService courseService, IMapper mapper, IWebHostEnvironment appEnvironment, IUnitOfWork unitOfWork)
+            ICourseService courseService, IMapper mapper, IWebHostEnvironment appEnvironment, IUnitOfWork unitOfWork, IVideoService videoService)
         {
             _logger = logger;
             _userManager = userManager;
@@ -39,6 +40,14 @@ namespace MvcEducationApp.Controllers
             _mapper = mapper;
             _appEnvironment = appEnvironment;
             _unitOfWork = unitOfWork;
+            _videoService = videoService;
+        }
+
+        [HttpGet]
+        public IActionResult ViewLessonDetails(int id)
+        {
+            var lesson = _lessonService.GetLesson(id);
+            return View("ViewLessonDetails", lesson);
         }
 
         [HttpGet]
@@ -70,7 +79,14 @@ namespace MvcEducationApp.Controllers
         public IActionResult Edit(int id)
         {
             var lesson = _lessonService.GetLesson(id);
-            return View("Edit", lesson);
+            var lessonEditViewModel = _mapper.Map<LessonDTO, LessonEditViewModel>(lesson);
+            var noNelectedFileTypes = Enum.GetNames(typeof(InfoType)).ToList();
+
+            noNelectedFileTypes.Remove(lessonEditViewModel.SelectedFileType);
+            lessonEditViewModel.NoSelectedFileType = noNelectedFileTypes;
+            lessonEditViewModel.SelectedFileType = lesson.InfoType.ToString();
+
+            return View("Edit", lessonEditViewModel);
         }
 
         [HttpPost]
@@ -97,17 +113,13 @@ namespace MvcEducationApp.Controllers
 
         private void AddFile(IFormFile uploadedFile, int lessonId)
         {
-            if (uploadedFile != null)
-            {
-                string path = "/files/" + uploadedFile.FileName;
-                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
-                {
-                    uploadedFile.CopyTo(fileStream);
-                }
-                var file = new VideoFile { Name = uploadedFile.FileName, Path = path , LessonId = lessonId };
-                _unitOfWork.GetRepository<VideoFile>().Create(file);
+             if (uploadedFile != null)
+             {
+                var uploadedFileStream = uploadedFile.OpenReadStream();
+                var rootFolder = _appEnvironment.WebRootPath;
+                _videoService.UploadFileAsync(uploadedFileStream, rootFolder, lessonId);
                 
-            }
+             }
         }
     }
 }

@@ -23,7 +23,7 @@
 </div>
 <div class="form-group">
     <div class="col-md-offset-2 col-md-10">
-        <input type="submit" class="btn btn-default" value="Edit" />
+        <input type="submit" class="btn btn-secondary" value="Edit" />
     </div>
 </div>
 
@@ -52,7 +52,7 @@
     {
         foreach (var Lesson in Model.Lessons)
         {
-            <tr>
+            <tr onclick="location.href='@Url.Action("ViewLessonDetails", "Lesson", new { Id = Lesson.Id })'">
                 <td>@Lesson.Title</td>
                 <td>@Lesson.CreatedBy</td>
                 <td>@Lesson.LastUpdated</td>

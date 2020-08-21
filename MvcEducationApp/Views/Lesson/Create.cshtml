@@ -14,15 +14,39 @@
             <textarea class="form-control" id="Description" name="Description" rows="3"></textarea>
         </div>
         <div class="form-group">
+            <label for="exampleFormControlSelect1">Example select</label>
+            <select class="form-control" id="InfoType" name="InfoType">
+                <option>Video</option>
+                <option>Text</option>
+            </select>
+        </div>
+        <div class="form-group" id="TextArea" style="display: none;">
             <label for="Text">Lesson Text</label>
             <textarea class="form-control" id="Text" name="Text" rows="3"></textarea>
         </div>
-        <div class="form-group">
-            <input type="file" name="UploadedFile" />
+        <div class="form-group" style="display: none;" id="UploadFileArea">
+            <input type="file" name="UploadedFile" id="UploadedFile" class="form-control-file"/>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" class="btn btn-default" value="Save" />
+                <input type="submit" class="btn btn-secondary" value="Save" />
             </div>
         </div>
     </form>
+
+<script type="text/javascript">
+    var infoTypeElement = document.getElementById("InfoType");
+
+    infoTypeElement.addEventListener('change', setDisplayStatus);
+    var textStyle = infoTypeElement.value == "Text" ? 'block' : 'none';
+    var videoStyle = infoTypeElement.value == "Video" ? 'block' : 'none';
+    document.getElementById("UploadFileArea").style.display = videoStyle;
+    document.getElementById("TextArea").style.display = textStyle;
+
+    function setDisplayStatus() {
+        var textStyle = this.value == "Text" ? 'block' : 'none';
+        var videoStyle = this.value == "Video" ? 'block' : 'none';
+        document.getElementById("UploadFileArea").style.display = videoStyle;
+        document.getElementById("TextArea").style.display = textStyle;
+    }
+</script>

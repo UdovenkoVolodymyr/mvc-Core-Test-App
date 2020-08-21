@@ -23,8 +23,8 @@ namespace McvEducationApp.BusinessLogic.Services
 
         public LessonDTO GetLesson(int id)
         {
-            var lesson = _unitOfWork.GetRepository<Lesson>().GetWithInclude(x => x.Id == id, p => p.Course, p => p.CreatedBy);
-            var lessonDTO = _mapper.Map<Lesson, LessonDTO>(lesson.FirstOrDefault());
+            var lesson = _unitOfWork.GetRepository<Lesson>().GetWithInclude(x => x.Id == id, p => p.Course, p => p.CreatedBy, v => v.VideoFile).FirstOrDefault();
+            var lessonDTO = _mapper.Map<Lesson, LessonDTO>(lesson);
             return lessonDTO;
         }
 
@@ -52,6 +52,7 @@ namespace McvEducationApp.BusinessLogic.Services
             modelToEdit.Title = lessonDTO.Title;
             modelToEdit.Description = lessonDTO.Description;
             modelToEdit.Text = lessonDTO.Text;
+            modelToEdit.InfoType = lessonDTO.InfoType;
 
             var lesson = _mapper.Map<LessonDTO, Lesson>(modelToEdit);
             lesson.LastUpdated = DateTime.UtcNow;

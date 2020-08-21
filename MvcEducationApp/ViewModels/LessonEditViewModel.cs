@@ -10,5 +10,7 @@ namespace MvcEducationApp.ViewModels
     public class LessonEditViewModel : Lesson
     {
         public IFormFile UploadedFile { get; set; }
+        public string SelectedFileType { get; set; }
+        public IEnumerable<string> NoSelectedFileType { get; set; }
     }
 }

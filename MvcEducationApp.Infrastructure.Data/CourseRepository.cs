@@ -19,7 +19,12 @@ namespace MvcEducationApp.Infrastructure.Data
 
         public Course GetCourseWithAllInclude(int id)
         {
-            var entity = _context.Courses.AsNoTracking().Include( i => i.Lessons).Include(i => i.LinkedCourses).ThenInclude( l => l.LinkedCourse).Where(x => x.Id == id).First();
+            var entity = _context.Courses.AsNoTracking()
+                .Include( i => i.Lessons)
+                .Include(i => i.CreatedBy)
+                .Include(i => i.LinkedCourses)
+                .ThenInclude( l => l.LinkedCourse)
+                .Where(x => x.Id == id).First();
             return entity;
         }
     }

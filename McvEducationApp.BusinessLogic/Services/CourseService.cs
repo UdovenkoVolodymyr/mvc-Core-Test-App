@@ -67,7 +67,7 @@ namespace McvEducationApp.BusinessLogic.Services
             courseToEdit.Сategory = courseDTO.Сategory;
             courseToEdit.Description = courseDTO.Description;
 
-            var course = _mapper.Map<CourseDTO, Course>(courseDTO);
+            var course = _mapper.Map<CourseDTO, Course>(courseToEdit);
             course.LastUpdated = DateTime.UtcNow;
             _unitOfWork.GetRepository<Course>().Update(course);
         }

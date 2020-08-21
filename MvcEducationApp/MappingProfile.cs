@@ -17,6 +17,7 @@ namespace MvcEducationApp
             CreateMap<CourseDTO, Course>();
             CreateMap<Lesson, LessonDTO>();
             CreateMap<LessonDTO, Lesson>();
+            CreateMap<LessonDTO, LessonEditViewModel>();
             CreateMap<LessonEditViewModel, LessonDTO>();
             CreateMap<CourseEditViewModel, CourseDTO>();
             CreateMap<Order, OrderDTO>();
