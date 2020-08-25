@@ -33,6 +33,12 @@ namespace McvEducationApp.BusinessLogic.Services
             var courseDTO = _mapper.Map<IEnumerable<Course>, IEnumerable<CourseDTO>>(course);
             return courseDTO;
         }
+        
+        public PageViewModel<Course> GetAllCourseWithPaginate(int page)
+        {
+            var coursePageView = _unitOfWork.GetCourseRepository().GetAllCourseWithPaginate(page);
+            return coursePageView;
+        }
 
         public IEnumerable<CourseDTO> GetUserCourses(string userId)
         {

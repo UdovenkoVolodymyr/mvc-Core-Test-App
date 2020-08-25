@@ -27,5 +27,22 @@ namespace MvcEducationApp.Infrastructure.Data
                 .Where(x => x.Id == id).First();
             return entity;
         }
+        
+        public PageViewModel<Course> GetAllCourseWithPaginate(int? page)
+        {
+            var pageSize = 3;
+            var courseCount = _context.Courses.Count();
+            var displayCourse = _context.Courses
+                .Skip(((page ?? 1) - 1) * pageSize)
+                .Take(pageSize)
+                .Include(i => i.Lessons)
+                .Include(i => i.CreatedBy)
+                .Include(i => i.LinkedCourses)
+                .ThenInclude(l => l.LinkedCourse)
+                .ToList();
+
+            var coursePageView = new PageViewModel<Course>(courseCount, page ?? 1, pageSize, displayCourse);
+            return coursePageView;
+        }
     }
 }

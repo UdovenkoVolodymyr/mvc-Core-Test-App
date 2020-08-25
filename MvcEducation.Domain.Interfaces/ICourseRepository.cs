@@ -8,5 +8,6 @@ namespace MvcEducation.Domain.Interfaces
     public interface ICourseRepository : IGenericRepository<Course>
     {
         Course GetCourseWithAllInclude(int id);
+        PageViewModel<Course> GetAllCourseWithPaginate(int? page);
     }
 }

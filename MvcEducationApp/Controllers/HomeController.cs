@@ -30,14 +30,11 @@ namespace MvcEducationApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int? page)
         {
-            var courseDTO = _courseService.GetAllCourse();
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<CourseDTO, Course>());
-            var mapper = new Mapper(config);
-            var returnModel = mapper.Map<IEnumerable<CourseDTO>, IEnumerable<Course>>(courseDTO);
+            var coursePageview = _unitOfWork.GetCourseRepository().GetAllCourseWithPaginate(page);
 
-            return View("Index", returnModel);
+            return View("Index", coursePageview);
         }
 
         [HttpPost]
