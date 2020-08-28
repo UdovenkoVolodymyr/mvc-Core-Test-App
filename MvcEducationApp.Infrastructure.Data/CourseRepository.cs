@@ -4,6 +4,7 @@ using MvcEducationApp.Domain.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace MvcEducationApp.Infrastructure.Data
@@ -28,7 +29,8 @@ namespace MvcEducationApp.Infrastructure.Data
             return entity;
         }
         
-        public PageViewModel<Course> GetAllCourseWithPaginate(int? page)
+        public PageViewModel<Dto> GetAllCourseWithPaginate<Dto>(int? page, Expression<Func<Course, int, Dto>> selector)
+            where Dto : class
         {
             var pageSize = 3;
             var courseCount = _context.Courses.Count();
@@ -39,9 +41,10 @@ namespace MvcEducationApp.Infrastructure.Data
                 .Include(i => i.CreatedBy)
                 .Include(i => i.LinkedCourses)
                 .ThenInclude(l => l.LinkedCourse)
+                .Select(selector)
                 .ToList();
 
-            var coursePageView = new PageViewModel<Course>(courseCount, page ?? 1, pageSize, displayCourse);
+            var coursePageView = new PageViewModel<Dto>(courseCount, page ?? 1, pageSize, displayCourse);
             return coursePageView;
         }
     }

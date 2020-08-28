@@ -27,11 +27,10 @@ namespace MvcEducationApp.Controllers
         private ILessonService _lessonService;
         private ICourseService _courseService;
         private IMapper _mapper;
-        private IUnitOfWork _unitOfWork;
         private IVideoService _videoService;
 
         public LessonController(ILogger<HomeController> logger, UserManager<User> userManager, ILessonService lessonService,
-            ICourseService courseService, IMapper mapper, IWebHostEnvironment appEnvironment, IUnitOfWork unitOfWork, IVideoService videoService)
+            ICourseService courseService, IMapper mapper, IWebHostEnvironment appEnvironment, IVideoService videoService)
         {
             _logger = logger;
             _userManager = userManager;
@@ -39,7 +38,6 @@ namespace MvcEducationApp.Controllers
             _courseService = courseService;
             _mapper = mapper;
             _appEnvironment = appEnvironment;
-            _unitOfWork = unitOfWork;
             _videoService = videoService;
         }
 

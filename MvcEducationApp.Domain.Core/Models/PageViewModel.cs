@@ -7,7 +7,7 @@ namespace MvcEducationApp.Domain.Core.Models
 {
     public class PageViewModel<TEntity> where TEntity : class
     {
-        public List<TEntity> Data;
+        public IEnumerable<TEntity> Data { get; set; }
         public int PageNumber { get; private set; }
         public int TotalPages { get; private set; }
     

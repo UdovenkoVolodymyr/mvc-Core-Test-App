@@ -2,7 +2,7 @@
     ViewData["Title"] = "User Courses";
 }
 
-
+<h3>My Courses</h3>
 <table class="table table-striped">
     <thead class="thead-dark">
         <tr>
@@ -15,7 +15,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var Course in Model)
+        @foreach (var Course in Model.Data)
         {
             <tr onclick="location.href='@Url.Action("ViewCourseDetails", "Course", new { Id = Course.Id })'">
                 <td>@Course.Title</td>
@@ -27,3 +27,20 @@
         }
     </tbody>
 </table>
+
+@if (Model.HasPreviousPage)
+{
+    <a asp-action="GetUserCourses"
+       asp-route-page="@(Model.PageNumber - 1)"
+       class="btn btn-outline-dark">
+        Previous
+    </a>
+}
+@if (Model.HasNextPage)
+{
+    <a asp-action="GetUserCourses"
+       asp-route-page="@(Model.PageNumber + 1)"
+       class="btn btn-outline-dark">
+        Next
+    </a>
+}

@@ -35,15 +35,17 @@ namespace MvcEducationApp.Controllers
         [HttpGet]
         public IActionResult ViewCourseDetails(int id)
         {
-            var course = _courseService.GetCourse(id);
+            var course = _courseService.FullGetCourse(id);
             return View("ViewCourseDetails", course);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUserCourses()
+        public async Task<IActionResult> GetUserCourses(int? page)
         {
+            var pageSize = 3;
+
             var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
-            var userCourses = _courseService.GetUserCourses(user.Id);
+            var userCourses = _courseService.GetUserCourses(user.Id, pageSize, page);
             return View("UserCourses", userCourses);
         }
 
@@ -82,13 +84,14 @@ namespace MvcEducationApp.Controllers
         public IActionResult EditCourseBody(int id)
         {
             ViewBag.CourseId = id;
-            var course = _courseService.GetCourse(id);
+            var course = _courseService.FullGetCourse(id);
             return View("Edit", course);
         }
 
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public async Task<IActionResult> EditCourseBody(Course model)
+        public IActionResult EditCourseBody( 
+            Course model)
         {
             var courseDTO = _mapper.Map<Course, CourseDTO>(model);
 

@@ -2,14 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MvcEducation.Domain.Interfaces;
+using MvcEducationApp.Domain.Core.Models;
+using MvcEducationApp.Infrastructure.Data;
 
 namespace WebApi
 {
@@ -26,6 +32,11 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDbContextPool<MvcEducationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LocalDBConnection")));
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<MvcEducationDBContext>();
+
+            AddAutoMapper(services);
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +57,17 @@ namespace WebApi
             {
                 endpoints.MapControllers();
             });
+        }
+
+        public void AddAutoMapper(IServiceCollection services)
+        {
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
     }
 }

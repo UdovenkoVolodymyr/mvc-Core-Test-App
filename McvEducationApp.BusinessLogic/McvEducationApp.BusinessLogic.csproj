@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MvcEducation.Domain.Interfaces\MvcEducation.Domain.Interfaces.csproj" />
     <ProjectReference Include="..\MvcEducationApp.Domain.Core\MvcEducationApp.Domain.Core.csproj" />
+    <ProjectReference Include="..\MvcEducationApp.Infrastructure.Data\MvcEducationApp.Infrastructure.Data.csproj" />
   </ItemGroup>
 
 </Project>

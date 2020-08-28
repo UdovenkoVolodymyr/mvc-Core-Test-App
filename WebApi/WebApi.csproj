@@ -1,8 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\McvEducationApp.BusinessLogic\McvEducationApp.BusinessLogic.csproj" />
+    <ProjectReference Include="..\MvcEducation.Domain.Interfaces\MvcEducation.Domain.Interfaces.csproj" />
+    <ProjectReference Include="..\MvcEducationApp.Domain.Core\MvcEducationApp.Domain.Core.csproj" />
+    <ProjectReference Include="..\MvcEducationApp.Infrastructure.Data\MvcEducationApp.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\MvcEducationApp\MvcEducationApp.csproj" />
+  </ItemGroup>
 
 
 </Project>
